@@ -33,3 +33,6 @@ def get_test_data(path='.'):
     return _read_data(path, 'test')
 
 
+X, Y = get_train_data()
+
+print('ok')
