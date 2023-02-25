@@ -9,7 +9,7 @@ import os
 def _read_data(path, type_):
 
     fname = 'churn-data-{}.csv'.format(type_)
-    fp = os.path.join(path, 'data', fname)
+    fp = os.path.join(path, 'data', 'phone_operator_churn',fname)
     data = pd.read_csv(fp)
     col_names = list(data.columns)
     col_names.remove('Churn')
@@ -33,4 +33,6 @@ def get_train_data(path='.'):
 def get_test_data(path='.'):
     return _read_data(path, 'test')
 
+
+X, Y = get_train_data()
 
