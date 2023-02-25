@@ -14,6 +14,8 @@ from PIL import Image
 import urllib
 import gdown 
 import zipfile
+import os
+import shutil
 
 LOCAL_DATA = Path(__file__).parent / "data"
 
@@ -129,11 +131,24 @@ def download_from_osf(private, username=None, password=None):
        
         ARCHIVE_PATH = LOCAL_DATA / archive_name
         gdown.download(url, './data/' + archive_name, quiet=False)
-
+        
         # Uncompress the data in the data folder
         print("Extracting now...", end="", flush=True)
-        with zipfile.ZipFile(ARCHIVE_PATH) as zip_ref:
-            zip_ref.extractall(LOCAL_DATA)
+        with zipfile.ZipFile(ARCHIVE_PATH) as zip_file:
+            for member in zip_file.namelist():
+                filename = os.path.basename(member)
+                # skip directories
+                if not filename:
+                    continue
+            
+                # copy file (taken from zipfile's extract)
+                source = zip_file.open(member)
+                target = open(os.path.join(LOCAL_DATA, filename), "wb")
+                with source, target:
+                    shutil.copyfileobj(source, target)
+
+       
+      
 
         # Clean the directory by removing the archive
         print("Removing the archive...", end="", flush=True)
