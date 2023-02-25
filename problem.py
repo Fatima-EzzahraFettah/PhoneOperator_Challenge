@@ -1,10 +1,60 @@
 import pandas as pd
 import os
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import KFold
+from sklearn.metrics import log_loss, recall_score, precision_score, confusion_matrix
+import rampwf as rw
+from sklearn.model_selection import ShuffleSplit
+from rampwf.score_types.base import BaseScoreType
+from rampwf.score_types.classifier_base import ClassifierBaseScoreType
+from rampwf.workflows.sklearn_pipeline import SKLearnPipeline
+from rampwf.workflows.sklearn_pipeline import Estimator
+
+problem_title = 'Phone Operator Churn classification'
+
+
+_prediction_label_name = [0, 1]
+
+Predictions = rw.prediction_types.make_multiclass(
+    label_names=_prediction_label_name
+)
+workflow = SKLearnPipeline()
+
+
+# -----------------------------------------------------------------------------
+# Evaluation metric: Matthews correlation coefficient (MCC) 
+# -----------------------------------------------------------------------------
+
+
+class MCC(BaseScoreType):
+    is_lower_the_better = False
+    minimum = -1
+    maximum = 1
+
+    def __init__(self, name="MCC", precision=4):
+        self.name = name
+        self.precision = precision
+
+    def __call__(self, y_true, y_pred):
+        tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+        term1 = tp*tn - fp*fn
+        term2 = np.sqrt((tp + fp )*(tp + fn)*(tn + fp)*(tn + fn))
+        return term1 / term2 
+
+score_types = [
+    MCC(name="MCC"),
+]
+
+
+def get_cv(X, y):
+    cv = ShuffleSplit(n_splits=10, test_size=0.25, random_state=57)
+    return cv.split(X, y)
+
+
 # -----------------------------------------------------------------------------
 # Training / testing data reader
 # -----------------------------------------------------------------------------
-
-
 
 def _read_data(path, type_):
 
