@@ -23,6 +23,7 @@ dependencies:
   - imbalanced-learn
   - tsfresh
   - featuretools
+  - gdown
   - pip:
       - https://api.github.com/repos/paris-saclay-cds/ramp-workflow/zipball/master
       - stldecompose

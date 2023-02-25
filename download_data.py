@@ -12,6 +12,8 @@ from osfclient.exceptions import UnauthorizedException
 import numpy as np
 from PIL import Image
 import urllib
+import gdown 
+import zipfile
 
 LOCAL_DATA = Path(__file__).parent / "data"
 
@@ -104,14 +106,14 @@ def download_from_osf(private, username=None, password=None):
         LOCAL_DATA.mkdir(exist_ok=True)
 
         print("Checking the data URL...", end="", flush=True)
+        # Get the connection to OSF
         store, data_config = get_connection_info(
             private, username=username, password=password
         )
         archive_name = data_config["archive_name"]
 
-        # Get the connection to OSF
-        '''
         
+        '''
 
         # Find the folder in the OSF project
         challenge_folder = get_one_element(store.folders, CHALLENGE_NAME)
@@ -122,63 +124,24 @@ def download_from_osf(private, username=None, password=None):
         print("Ok.")
         '''
         ##############
-        import requests
-        import zipfile
-        from io import BytesIO
-        rz = requests.get(data_config['url'])
-        with zipfile.ZipFile(BytesIO(rz.content)) as z:
-            z.extractall(ARCHIVE_PATH)
-
-        zipfile = requests.get(data_config['url'], allow_redirects=True)
-        filename = archive_name
         
+        url = 'https://drive.google.com/uc?id=1wue-Cyp5OgURqEWfe8Yuu9_YNP2jDwGH'
+       
         ARCHIVE_PATH = LOCAL_DATA / archive_name
-      
-        print("Downloading the data...")
-        with open(ARCHIVE_PATH, "wb") as f:
-            f.write(zipfile.content)
-            f.close()
-      
+        gdown.download(url, './data/' + archive_name, quiet=False)
 
-        #df2 = pd.read_csv(FILE_PATH_2, encoding='iso-8859-1', na_values= ' ')
-
-
-        #############
-
-
-
-        # Download the archive in the data
-        """
-        ARCHIVE_PATH = LOCAL_DATA / archive_name
-        print("Downloading the data...")
-        with open(ARCHIVE_PATH, "wb") as f:
-            osf_file.write_to(f)
-        """
         # Uncompress the data in the data folder
         print("Extracting now...", end="", flush=True)
- 
-
-        #with tarfile.open(ARCHIVE_PATH, "r:gz") as f: f.extractall()
-        rz = requests.get(data_config['url'])
-        with zipfile.ZipFile(BytesIO(rz.content)) as z:
-            z.extractall(ARCHIVE_PATH)
-
-       
         with zipfile.ZipFile(ARCHIVE_PATH) as zip_ref:
             zip_ref.extractall(LOCAL_DATA)
-
-
-        #with tarfile.open(ARCHIVE_PATH) as tf:
-         #   tf.extractall(LOCAL_DATA)
-        print("Ok.")
 
         # Clean the directory by removing the archive
         print("Removing the archive...", end="", flush=True)
         ARCHIVE_PATH.unlink()
-        print("Ok.")
+      
         print("Checking the data...", end="", flush=True)
         checksum_data(private, raise_error=True)
-        print("Ok.")
+    
     else:
         print(
             f"{LOCAL_DATA} directory is not empty. Please empty it or select"
