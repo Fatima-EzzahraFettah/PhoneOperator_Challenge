@@ -7,11 +7,9 @@ This challenge was done as a project for the Master 2 Data Science (2022/2023), 
 
 ## Introduction
 
-fill in
+In the Telecom Industry, many subscriptions can be ended or canceled, which is known as churn. If there are no subscriptions, a customer churns when they stop using the service. The main goal of this project is to reduce customer churn , this is equivalent to increase customer retention, the terms being interchangeable to a large degree
 
-This project aims at constructing a machine learning model capable at predicting the answer to two questions: 
-1.  **fill in**
-2.  **fill in**. 
+** This project aims at constructing a machine learning model capable at predicting accurately Customer Churn Rate.**
 
 
 
