@@ -13,13 +13,14 @@ from rampwf.workflows.sklearn_pipeline import Estimator
 
 problem_title = 'Phone Operator Churn classification'
 
+workflow = SKLearnPipeline()
 
 _prediction_label_name = [0, 1]
 
 Predictions = rw.prediction_types.make_multiclass(
-    label_names=_prediction_label_name
+  label_names=_prediction_label_name
 )
-workflow = SKLearnPipeline()
+
 
 
 # -----------------------------------------------------------------------------
@@ -37,10 +38,17 @@ class MCC(BaseScoreType):
         self.precision = precision
 
     def __call__(self, y_true, y_pred):
-        tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+        y_pred1 = self.y_label_index(y_pred)
+        y_true1 = self.y_label_index(y_true)
+        tn, fp, fn, tp = confusion_matrix(y_true1,y_pred1).ravel()
         term1 = tp*tn - fp*fn
         term2 = np.sqrt((tp + fp )*(tp + fn)*(tn + fp)*(tn + fn))
         return term1 / term2 
+   
+    @staticmethod
+    def y_label_index(data):
+        """Multi-class y_pred is the index of the predicted label."""
+        return np.argmax(data, axis=1)
 
 score_types = [
     MCC(name="MCC"),
@@ -84,5 +92,5 @@ def get_test_data(path='.'):
     return _read_data(path, 'test')
 
 
-#X, Y = get_train_data()
+X, Y = get_train_data()
 
