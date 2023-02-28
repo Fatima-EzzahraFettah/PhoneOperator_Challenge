@@ -26,7 +26,7 @@ RAMP_FOLDER_CONFIGURATION = {
     "public": dict(
         code="t4uf8",
         archive_name="phone_operator_churn.zip",
-        url = "https://drive.google.com/file/d/1wue-Cyp5OgURqEWfe8Yuu9_YNP2jDwGH/view?usp=share_link",
+        url = "https://drive.google.com/uc?id=1wue-Cyp5OgURqEWfe8Yuu9_YNP2jDwGH",
         # to findout checksum use function
         # defined below: hash_folder(folder_path)
         data_checksum=None,
@@ -127,7 +127,7 @@ def download_from_osf(private, username=None, password=None):
         '''
         ##############
         
-        url = 'https://drive.google.com/uc?id=1wue-Cyp5OgURqEWfe8Yuu9_YNP2jDwGH'
+        url = data_config["url"]
        
         ARCHIVE_PATH = LOCAL_DATA / archive_name
         gdown.download(url, './data/' + archive_name, quiet=False)

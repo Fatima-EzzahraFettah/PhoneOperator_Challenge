@@ -1,4 +1,4 @@
-# Phone Operator Challenge  ## to customize
+# Phone Operator Churn Prediction
 
 
 Authors : Samia OUAKRIM, Ladji Idrissa FOFANA and Fatima-Ezzahra FETTAH
@@ -9,7 +9,7 @@ This challenge was done as a project for the Master 2 Data Science (2022/2023), 
 
 In the Telecom Industry, many subscriptions can be ended or canceled, which is known as churn. If there are no subscriptions, a customer churns when they stop using the service. The main goal of this project is to reduce customer churn , this is equivalent to increase customer retention, the terms being interchangeable to a large degree
 
-** This project aims at constructing a machine learning model capable at predicting accurately Customer Churn Rate.**
+This project aims at constructing a machine learning model capable at predicting accurately Customer Churn Rate.
 
 
 
